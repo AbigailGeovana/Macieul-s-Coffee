@@ -7,7 +7,7 @@ const ADD_PEDIDO = 'https://www.fateclins.edu.br/felipeMaciel/macieulsCoffee/api
 function init(){
     adicionarPedido();
 }*/
-
+//teste
 let arrPedido = [];
 
     function adicionarPedido(){
