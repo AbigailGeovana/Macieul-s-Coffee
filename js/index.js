@@ -7,6 +7,7 @@ $(document).ready(function () {
     
     init();
 
+    
     function init(){
         adicionarPedido();
         componentInit();
@@ -16,8 +17,30 @@ $(document).ready(function () {
         limparPedidoBtn();
         checkOrder();
         order();
+        test();
+        }
+        
+    function test() {
+        $.ajax({
+            url: "https://cipaon.com.br/api/produto.php",
+            method: "POST",
+            data: {
+                token: "73f0b83ef01dce03717091bd11a7a64efc607b32",
+                nome: "Biga S2",
+                idCategoria: 2,
+                foto: "www.biga.com/biga.png",
+                preco: 9999,
+                descricao: "Biga s2"
+            },
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
     }
-
+    
     function componentInit(){
         $.tab();
         $.tab('change tab', 'tab-bolos');
