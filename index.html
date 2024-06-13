@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macieul's Coffee</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <header>
+        <div class="ui grid container" id="menu">
+            <div class="twelve wide column">
+                <button class="ui brown button menu-item" data-tab-name="tab-bolos">
+                    <i class="icon birthday cake large"></i><br />
+                    Bolos
+                </button>
+                <button class="ui brown button menu-item" data-tab-name="tab-cafes">
+                    <i class="icon coffee large"></i><br />
+                    Cafés
+                </button>
+            </div>
+            <div class="four wide column right">
+                <button class="ui brown button right floated" id="btn-limpar-pedido">
+                    <i class="eraser icon"></i>
+                    Limpar Pedido
+                </button>
+            </div>
+            <div class="four wide column right">
+                <button class="ui brown button right floated" id="btn-adicionar-pedido">
+                    <i class="eraser icon"></i>
+                    Adicionar Pedido
+                </button>
+            </div>
+        </div>
+        <button class="ui green button" id="btn-confirmar">
+            <i class="check icon"></i>
+        </button>
+    </header>
+    <main>
+        <div class="ui container">
+            <div class="ui tab" data-tab="tab-bolos">
+                <div class="ui four doubling stackable cards special" id="menu-bolos">
+                    
+                    
+                    
+
+                </div>
+            </div>
+
+
+
+            <div class="ui tab" data-tab="tab-cafes">
+                <div class="ui four doubling stackable cards special">
+                    <div class="ui card fluid">
+                        <div class="blurring dimmable image">
+                            <div class="ui dimmer">
+                                <div class="content">
+                                    <div class="center">
+                                        <div class="ui inverted button">Descrição do Café Expresso</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui top brown attached label">Café Expresso</div>
+                            <div class="ui green bottom right attached label">R$ 6,80</div>
+                            <img src="img/expresso.jpg">
+                        </div>
+                        <div class="extra content">
+                            <div class="ui three buttons">
+                                <div class="ui icon button basic adicionar-remover-item" data-item="del">
+                                    <i class="minus icon"></i>
+                                </div>
+                                <div class="ui basic button quantidade" data-product="Café Expresso" data-price="6.80">0
+                                </div>
+                                <div class="ui icon button basic adicionar-remover-item" data-item="add">
+                                    <i class="add icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui card fluid">
+                        <div class="blurring dimmable image">
+                            <div class="ui dimmer">
+                                <div class="content">
+                                    <div class="center">
+                                        <div class="ui inverted button">Descrição do Cappuccino</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui top brown attached label">Cappuccino</div>
+                            <div class="ui green bottom right attached label">R$ 12,82</div>
+                            <img src="img/cappuccino.jpg">
+                        </div>
+                        <div class="extra content">
+                            <div class="ui three buttons">
+                                <div class="ui icon button basic adicionar-remover-item" data-item="del">
+                                    <i class="minus icon"></i>
+                                </div>
+                                <div class="ui basic button quantidade" data-product="Cappuccino" data-price="12.82">0
+                                </div>
+                                <div class="ui icon button basic adicionar-remover-item" data-item="add">
+                                    <i class="add icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui card fluid">
+                        <div class="blurring dimmable image">
+                            <div class="ui dimmer">
+                                <div class="content">
+                                    <div class="center">
+                                        <div class="ui inverted button">Descrição do Moccacino</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui top brown attached label">Moccacino</div>
+                            <div class="ui green bottom right attached label">R$ 9,21</div>
+                            <img src="img/moccacino.jpg">
+                        </div>
+                        <div class="extra content">
+                            <div class="ui three buttons">
+                                <div class="ui icon button basic adicionar-remover-item" data-item="del">
+                                    <i class="minus icon"></i>
+                                </div>
+                                <div class="ui basic button quantidade" data-product="Moccacino" data-price="9.21">0
+                                </div>
+                                <div class="ui icon button basic adicionar-remover-item" data-item="add">
+                                    <i class="add icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui card fluid">
+                        <div class="blurring dimmable image">
+                            <div class="ui dimmer">
+                                <div class="content">
+                                    <div class="center">
+                                        <div class="ui inverted button">Descrição do Cold Brew Coffee</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui top brown attached label">Cold Brew Coffee</div>
+                            <div class="ui green bottom right attached label">R$ 13,39</div>
+                            <img src="img/cold-brew-coffee.jpg">
+                        </div>
+                        <div class="extra content">
+                            <div class="ui three buttons">
+                                <div class="ui icon button basic adicionar-remover-item" data-item="del">
+                                    <i class="minus icon"></i>
+                                </div>
+                                <div class="ui basic button quantidade" data-product="Cold Brew Coffee"
+                                    data-price="13.39">0
+                                </div>
+                                <div class="ui icon button basic adicionar-remover-item" data-item="add">
+                                    <i class="add icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="ui modal">
+        <i class="close icon"></i>
+        <div class="header">
+            Finalizar do Pedido
+        </div>
+        <div class="content">
+            <div class="ui form">
+                <div class="field">
+                    <label>Número da Mesa</label>
+                    <input type="number" name="numero-mesa"  pattern="\d*" placeholder="Digite o número da mesa" min="1" id="numero-mesa">
+                </div>
+            </div>
+            <table class="ui unstackable table">
+                <thead>
+                    <tr>
+                        <th>
+                            Produto
+                        </th>
+                        <th class="ui center aligned">Quantidade</th>
+                        <th class="ui right aligned">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="resumo-pedido">
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="actions">
+            <div class="ui black deny button">
+                Voltar
+            </div>
+            <div class="ui green right button" id="btn-realizar-pedido">
+                 Confirmar - Total <span id="valor-total"></span>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/manterproduto.js"></script>
+
+</body>
+
+</html>
