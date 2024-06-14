@@ -7,6 +7,7 @@ $(document).ready(function () {
     
     init();
 
+    
     function init(){
         componentInit();
         carregaMenuBolos();
@@ -17,7 +18,7 @@ $(document).ready(function () {
         order();
         //initManterProduto();
     }
-
+    
     function componentInit(){
         $.tab();
         $.tab('change tab', 'tab-bolos');
