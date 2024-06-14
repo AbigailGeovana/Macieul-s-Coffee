@@ -8,7 +8,6 @@ $(document).ready(function () {
     init();
 
     function init(){
-        adicionarPedido();
         componentInit();
         carregaMenuBolos();
         addRemoveItem();
@@ -16,6 +15,7 @@ $(document).ready(function () {
         limparPedidoBtn();
         checkOrder();
         order();
+        //initManterProduto();
     }
 
     function componentInit(){
