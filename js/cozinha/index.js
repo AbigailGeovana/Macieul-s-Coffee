@@ -189,6 +189,20 @@ init();
        console.log(item);
     });
 
+    function pesquisar(){
+        $('#btn-find').click(function () {
+
+            let nomeProcurar = $('#findNome').val();
+            if (nomeProcurar == '') {
+                alert("Nenhum nome digitado!");
+                return;
+            } else {
+                const resultadoProcurar = array.filter(json => nomeProcurar == json.nome);
+                atualizarContato(resultadoProcurar);
+            }
+        });
+    }
+   
    
     
 
