@@ -241,7 +241,7 @@ var newResponse = '';
         let fieldsErr = [];
 
         dados.forEach(item => {
-            if (item.value == "" && item.name !== "foto" && item.name !== "categoria") {
+            if (item.value == "" && item.name !== "foto") {
                 fieldsErr.push(item.name);
             }
                 dadosObj[item.name] = item.value;
