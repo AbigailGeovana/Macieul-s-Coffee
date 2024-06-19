@@ -1,16 +1,16 @@
-const TOKEN = '73f0b83ef01dce03717091bd11a7a64efc607b32';
+const TOKEN = "73f0b83ef01dce03717091bd11a7a64efc607b32";
 const END_FUNCIONAL = `https://cipaon.com.br/api/produto.php?token=${TOKEN}`;
 const URL = `https://cipaon.com.br/api/produto.php?`;
-var newResponse = '';
+var newResponse = "";
 
 init();
 
-    function init(){
-        consultarApiProdutos();
-    }
-  
-    //------------------ LISTAR-FUNCIONALIDADE: LISTAR ------------------//
-    /*function listarProdutos() {
+function init() {
+  consultarApiProdutos();
+}
+
+//------------------ LISTAR-FUNCIONALIDADE: LISTAR ------------------//
+/*function listarProdutos() {
       ->FORMA DE FAZER COM AJAX<-
         console.log('entrei lista');
         $.ajax({
@@ -26,71 +26,70 @@ init();
             });
 
     }*/
-       
-    function consultarApiProdutos(){
-        $.getJSON(END_FUNCIONAL, function (response){
-            newResponse = response;
-            listarProdutos(newResponse);
 
-        });
+function consultarApiProdutos() {
+  $.getJSON(END_FUNCIONAL, function (response) {
+    newResponse = response;
+    listarProdutos(newResponse);
+  });
+}
+
+function ordenarExibicao(newResponse) {
+  newResponse.sort(function (a, b) {
+    return a.idCategoria - b.idCategoria;
+  });
+
+  newResponse.sort(function (a, b) {
+    if (a.idCategoria === b.idCategoria) {
+      return a.nome.localeCompare(b.nome);
     }
+    return 0;
+  });
+}
 
-    function ordenarExibicao(newResponse){
+function listarProdutos(newResponse) {
+  ordenarExibicao(newResponse);
 
-        newResponse.sort(function(a, b) {
-            return a.idCategoria - b.idCategoria;
-        });
+  var conteudoProduto = "";
 
-        newResponse.sort(function(a, b) {
-            if (a.idCategoria === b.idCategoria) {
-                return a.nome.localeCompare(b.nome);
-            }
-            return 0; 
-        });
-    }
-
-    function listarProdutos(newResponse) {
-        ordenarExibicao(newResponse);
-        
-        var conteudoProduto = '';
-        
-        newResponse.forEach(element => {
-            conteudoProduto += `<div class="ui card fluid" id="produto-${element.idProduto}">
-                                    <div class="ui top brown attached label">${element.nome}</div>
-                                    <div class="blurring dimmable image">    
-                                       <div class="ui green bottom right attached label">${element.idCategoria}</div>
-                                            <img src="${element.foto}">
-                                    </div>
-                                    <div class="extra content">
-                                        <div class="ui three buttons">
-                                            <a href="/editar.html?produto=${element.idProduto}" class="ui button">
-                                                <i class="edit icon"></i>
-                                            </a>
-                                            <div id="delete" class="ui icon button basic deletar" data-item="del">
+  newResponse.forEach((element) => {
+    conteudoProduto += `<div class="ui card fluid" id="produto-${element.idProduto}">
+                                <div class="ui top brown attached label">${element.nome} - ${element.descricao}</div>
+                                <div class="blurring dimmable image">
+                                    <div class="ui green bottom right attached label">${element.preco}</div>
+                                    <div class="ui green bottom left attached label">${element.idCategoria}</div>
+                                        <img src="${element.foto}">
+                                </div>
+                                <div class="extra content">
+                                    <div class="ui three buttons">
+                                        <a href="/editar.html?produto=${element.idProduto}" class="ui button">
+                                            <i class="edit icon"></i>
+                                        </a>
+                                        <div id="delete" class="ui icon button basic deletar" data-item="del">
                                                 <i class="delete icon"></i>
-                                            </div>
                                         </div>
                                     </div>
-                                </div>`;
-	});
-	$('#menu-produtos').append(conteudoProduto);
+                                </div>
+                            </div>`;
+  });
+  $("#menu-produtos").append(conteudoProduto);
 }
 //------------------ LISTAR-FUNCIONALIDADE: LISTAR ------------------//
 
 //------------------ LISTAR-FUNCIONALIDADE: EXCLUIR ------------------//
-$('#menu-produtos').on('click', '#delete', function () {
-	let item = $(this).closest('.ui.card').attr('id').split('-')[1];
+$("#menu-produtos").on("click", "#delete", function () {
+  let item = $(this).closest(".ui.card").attr("id").split("-")[1];
 
-	confirmarExclusao(item);
+  confirmarExclusao(item);
 
-	$('.ui.modal').modal('show');
+  $(".ui.modal").modal("show");
 });
 
 function confirmarExclusao(item) {
-	$('#confirma-excluir-produtos').empty();
+  $("#confirma-excluir-produtos").empty();
 
-	produto = newResponse.find((prod) => prod.idProduto == item);
-	conteudo = `
+  produto = newResponse.find((prod) => prod.idProduto == item);
+  conteudo = `
         <div class="ui grid">
             <div class="four wide column">
                 <div class="ui medium image">
@@ -113,21 +112,21 @@ function confirmarExclusao(item) {
             </div>
         </div>`;
 
-	$('#confirma-excluir-produtos').append(conteudo);
+  $("#confirma-excluir-produtos").append(conteudo);
 
-	//$('#confirma-excluir-produtos').off('click', '#deletar-produto').on('click', '#deletar-produto', function(){
-	$('#deletar-produto')
-		.off('click')
-		.on('click', function () {
-			excluirProduto(item);
-			$('.ui.modal').modal('hide');
-		});
+  //$('#confirma-excluir-produtos').off('click', '#deletar-produto').on('click', '#deletar-produto', function(){
+  $("#deletar-produto")
+    .off("click")
+    .on("click", function () {
+      excluirProduto(item);
+      $(".ui.modal").modal("hide");
+    });
 
-	$('.ui.black.deny.button')
-		.off('click')
-		.on('click', function () {
-			$('.ui.modal').modal('hide');
-		});
+  $(".ui.black.deny.button")
+    .off("click")
+    .on("click", function () {
+      $(".ui.modal").modal("hide");
+    });
 }
 
 /*function excluirProduto(item){
@@ -149,156 +148,155 @@ function confirmarExclusao(item) {
     }*/
 
 function excluirProduto(item) {
-	const DELETE = `https://cipaon.com.br/api/produto.php?token=${TOKEN}&idProduto=${item}`;
-	$.ajax({
-		url: DELETE,
-		type: 'DELETE',
-		success: function (response) {
-			console.log('produto deletado', item);
-			$(`#produto-${item}`).remove();
-		},
-		error: function (error) {
-			console.log(error);
-		},
-	});
+  const DELETE = `https://cipaon.com.br/api/produto.php?token=${TOKEN}&idProduto=${item}`;
+  $.ajax({
+    url: DELETE,
+    type: "DELETE",
+    success: function (response) {
+      console.log("produto deletado", item);
+      $(`#produto-${item}`).remove();
+    },
+    error: function (error) {
+      console.log(error);
+    },
+  });
 }
 //------------------ LISTAR-FUNCIONALIDADE: EXCLUIR ------------------//
 
 //------------------ LISTAR-FUNCIONALIDADE: PESQUISA ------------------//
-$(document).on('click', '#btn-procurar-generica', function () {
-	$('#menu-produtos').empty();
-	pesquisarProdutoGenerico();
+$(document).on("click", "#btn-procurar-generica", function () {
+  $("#menu-produtos").empty();
+  pesquisarProdutoGenerico();
 });
 
-$(document).on('click', '#btn-limpar-generica', function () {
-	$('#menu-produtos').empty();
-	$('#pesquisa-generica').val('');
-	consultarApiProdutos();
+$(document).on("click", "#btn-limpar-generica", function () {
+  $("#menu-produtos").empty();
+  $("#pesquisa-generica").val("");
+  consultarApiProdutos();
 });
 
 function pesquisarProdutoGenerico() {
-	let nomeProcurar = $('#pesquisa-generica').val();
-	if (nomeProcurar == '') {
-		alertaPesquisaGenericaVazia();
-		return;
-	} else {
-		const resultadoProcurar = newResponse.filter(
-			(json) => nomeProcurar == json.nome
-		);
-		listarProdutos(resultadoProcurar);
-	}
+  let nomeProcurar = $("#pesquisa-generica").val();
+  if (nomeProcurar == "") {
+    alertaPesquisaGenericaVazia();
+    return;
+  } else {
+    const resultadoProcurar = newResponse.filter(
+      (json) => nomeProcurar == json.nome
+    );
+    listarProdutos(resultadoProcurar);
+  }
 }
 
 function alertaPesquisaGenericaVazia() {
-	$('#aviso-pesquisa-vazia').popup('show');
+  $("#aviso-pesquisa-vazia").popup("show");
 }
 //------------------ LISTAR-FUNCIONALIDADE: PESQUISA ------------------//
 
 //------------------ PESQUISAR-FUNCIONALIDADE: PESQUISA ------------------//
-$('#pesquisa-dinamica').on('input', function () {
-	pesquisarProduto();
+$("#pesquisa-dinamica").on("input", function () {
+  pesquisarProduto();
 });
 
 function pesquisarProduto() {
-	$('#menu-produtos').empty();
+  $("#menu-produtos").empty();
 
-	let pesquisa = $('#pesquisa-dinamica').val();
-	pesquisa.toLowerCase();
+  let pesquisa = $("#pesquisa-dinamica").val();
+  pesquisa.toLowerCase();
 
-	const resultado = newResponse.filter((json) =>
-		json.nome.toLowerCase().startsWith(pesquisa)
-	);
+  const resultado = newResponse.filter((json) =>
+    json.nome.toLowerCase().startsWith(pesquisa)
+  );
 
-	$('#pesquisa-generica').val('');
-	listarProdutos(resultado);
+  $("#pesquisa-generica").val("");
+  listarProdutos(resultado);
 }
 //------------------ PESQUISAR-FUNCIONALIDADE: PESQUISA ------------------//
 
-    //------------------ CRIAR-FUNCIONALIDADE: CRIAR ------------------//
-    const inputs = $('#criar-produto').find('input[required], select[required]');
-    const button = $('#btn-criar-produto');
+//------------------ CRIAR-FUNCIONALIDADE: CRIAR ------------------//
+const inputs = $("#criar-produto").find("input[required], select[required]");
+const button = $("#btn-criar-produto");
 
-    function checkInputs() {
-        let allFilled = true;
-        inputs.each(function() {
-            if ($(this).is('select')){
-                console.log('entrei')
-                if ($(this).val() === '' || $(this).find('option:selected').is(':disabled')) {
-                    allFilled = false;
-                    return false;
-                }
-            } else {
-                if ($(this).val() === '') {
-                    allFilled = false;
-                    return false;
-                }
-            }
-           
-        });
-        button.prop('disabled', !allFilled);
+function checkInputs() {
+  let allFilled = true;
+  inputs.each(function () {
+    if ($(this).is("select")) {
+      console.log("entrei");
+      if (
+        $(this).val() === "" ||
+        $(this).find("option:selected").is(":disabled")
+      ) {
+        allFilled = false;
+        return false;
+      }
+    } else {
+      if ($(this).val() === "") {
+        allFilled = false;
+        return false;
+      }
     }
+  });
+  button.prop("disabled", !allFilled);
+}
 
-    inputs.on('input change', checkInputs);
-    checkInputs();
+inputs.on("input change", checkInputs);
+checkInputs();
 
-$('#criar-produto').on('submit', function (event) {
-	event.preventDefault();
-	coletarDadosCreate($(this));
+$("#criar-produto").on("submit", function (event) {
+  event.preventDefault();
+  coletarDadosCreate($(this));
 });
 
 function coletarDadosCreate(form) {
-	const dados = form.serializeArray();
-	let dadosObj = {};
-	let fieldsErr = [];
+  const dados = form.serializeArray();
+  let dadosObj = {};
+  let fieldsErr = [];
 
-	dados.forEach((item) => {
-		if (item.value == '' && item.name !== 'foto') {
-			fieldsErr.push(item.name);
-		}
-		dadosObj[item.name] = item.value;
-	});
+  dados.forEach((item) => {
+    if (item.value == "" && item.name !== "foto") {
+      fieldsErr.push(item.name);
+    }
+    dadosObj[item.name] = item.value;
+  });
 
-	if (fieldsErr.length !== 0) {
-		$('#erro-criacao-produtos').modal('show');
+  if (fieldsErr.length !== 0) {
+    $("#erro-criacao-produtos").modal("show");
 
-		conteudo = `O campo ${fieldsErr.toString()} está vazio!`;
+    conteudo = `O campo ${fieldsErr.toString()} está vazio!`;
 
-		$('#errModel').append(conteudo);
+    $("#errModel").append(conteudo);
 
-		return;
-	}
+    return;
+  }
 
-	criarProduto(dadosObj);
+  criarProduto(dadosObj);
 }
 
-    function criarProduto(dadosObj) {
-        $.ajax({
-            url: URL,
-            method: "POST",
-            data: {
-                token: TOKEN,
-                nome: dadosObj.nome,
-                idCategoria: dadosObj.categoria,
-                foto: dadosObj.foto,
-                preco: dadosObj.preco,
-                descricao: dadosObj.descricao
-            },
-            success: function (data) {
-                $('#escolha')
-                    .modal('show')
-                ; 
+function criarProduto(dadosObj) {
+  $.ajax({
+    url: URL,
+    method: "POST",
+    data: {
+      token: TOKEN,
+      nome: dadosObj.nome,
+      idCategoria: dadosObj.categoria,
+      foto: dadosObj.foto,
+      preco: dadosObj.preco,
+      descricao: dadosObj.descricao,
+    },
+    success: function (data) {
+      $("#escolha").modal("show");
 
-                modalEscolhaContinuarVisualizar();
-                $('#criar-produto')[0].reset();
-            },
-            error: function (error) {
-            }
-        })
-    }
+      modalEscolhaContinuarVisualizar();
+      $("#criar-produto")[0].reset();
+    },
+    error: function (error) {},
+  });
+}
 
 function modalEscolhaContinuarVisualizar() {
-	$('#escolha-produtos').empty();
-	conteudo = `
+  $("#escolha-produtos").empty();
+  conteudo = `
                 <div class=""> 
                     <a href="/listar.html">
                         <button class="ui button" id="btn-visualizar">Visualizar Produto</button>
@@ -309,59 +307,59 @@ function modalEscolhaContinuarVisualizar() {
                 </div>
         `;
 
-	$('#escolha-produtos').append(conteudo);
+  $("#escolha-produtos").append(conteudo);
 }
 //------------------ CRIAR-FUNCIONALIDADE: CRIAR ------------------//
 
-$('#editar-produto').on('submit', function (event) {
-    const dados = form.serializeArray();
-	let dadosObj = {};
-	let fieldsErr = [];
+$("#editar-produto").on("submit", function (event) {
+  const dados = form.serializeArray();
+  let dadosObj = {};
+  let fieldsErr = [];
 
-	dados.forEach((item) => {
-		if (item.value == '' && item.name !== 'foto') {
-			fieldsErr.push(item.name);
-		}
-		dadosObj[item.name] = item.value;
-	});
-
-	if (fieldsErr.length !== 0) {
-		$('#erro-criacao-produtos').modal('show');
-
-		conteudo = `O campo ${fieldsErr.toString()} está vazio!`;
-
-		$('#errModel').append(conteudo);
-
-		return;
+  dados.forEach((item) => {
+    if (item.value == "" && item.name !== "foto") {
+      fieldsErr.push(item.name);
     }
-    
-    console.log(dadosObj);
-	
-    handleEdit(dadosObj)
+    dadosObj[item.name] = item.value;
+  });
+
+  if (fieldsErr.length !== 0) {
+    $("#erro-criacao-produtos").modal("show");
+
+    conteudo = `O campo ${fieldsErr.toString()} está vazio!`;
+
+    $("#errModel").append(conteudo);
+
+    return;
+  }
+
+  console.log(dadosObj);
+
+  handleEdit(dadosObj);
 });
 
 function handleEdit(dadosObj) {
-    $.ajax({
-		url: END_FUNCIONAL,
-		method: 'PUT',
-		data: JSON.stringify({
-            idProduto: dadosObj.id,
-            produto: {
-                nome: dadosObj.nome,
-                idCategoria: dadosObj.categoria,
-                foto: dadosObj.foto,
-                preco: dadosObj.preco,
-                descricao: dadosObj.descricao
-            }
-		}),
-		success: function (data) {
-			$('#escolha').modal('show');
+  $.ajax({
+    url: END_FUNCIONAL,
+    method: "PUT",
+    data: JSON.stringify({
+      idProduto: dadosObj.id,
+      produto: {
+        nome: dadosObj.nome,
+        idCategoria: dadosObj.categoria,
+        foto: dadosObj.foto,
+        preco: dadosObj.preco,
+        descricao: dadosObj.descricao,
+      },
+    }),
+    success: function (data) {
+      $("#escolha").modal("show");
 
-			modalEscolhaContinuarVisualizar();
-			$('#criar-produto')[0].reset();
-		},
-        error: function (error) {
-            console.log(error)
-        },
-	});
+      modalEscolhaContinuarVisualizar();
+      $("#criar-produto")[0].reset();
+    },
+    error: function (error) {
+      console.log(error);
+    },
+  });
 }
