@@ -8,7 +8,6 @@ var newResponse = '';
     function init(){
         //criarProduto();
         consultarApiProdutos();
-        $('#categoria').dropdown();
     }
   
     //------------------ LISTAR ------------------//
