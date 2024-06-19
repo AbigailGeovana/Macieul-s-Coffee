@@ -237,16 +237,34 @@ var newResponse = '';
     function coletarDadosCreate(form){
         const dados = form.serializeArray();
         let dadosObj = {};
+        let fieldsErr = [];
 
         dados.forEach(item => {
+            if (item.value == "" && item.name !== "foto") {
+                fieldsErr.push(item.name);
+            }
                 dadosObj[item.name] = item.value;
         });
 
-       // if(blabla
-          $('#erro-criacao-produtos')
-          .modal('show')
-        ; 
-       //)
+        if (fieldsErr.length !== 0) {
+                $('#erro-criacao-produtos').modal('show');
+                
+            console.log("aaa");
+            
+            conteudo = `O campo ${fieldsErr.toString()} está vazio!`;
+            
+            $('#errModel').append(conteudo);
+
+            return;
+        }
+
+        // if (!isNaN(dadosObj.categoria) && !isNaN(parseFloat(dadosObj.categoria))){
+        //     conteudo = `Categoria deve ser somente 1 (Bolo) ou 2 (Bebida).`;
+            
+        //     $('#errModel').append(conteudo);
+
+        //     return;
+        // }
 
         criarProduto(dadosObj);
     }

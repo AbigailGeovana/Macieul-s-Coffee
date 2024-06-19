@@ -50,10 +50,15 @@
                                     <path d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z"/>
                                 </svg>
                             </label>
-                            <input type="text" name="categoria" placeholder="Insira o texto..." required>
-                            <div class="ui pointing label">
-                                Bolo | Bebida
-                            </div>
+                            <div class="ui selection dropdown">
+                                <input type="hidden" name="categoria">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">Categoria</div>
+                                <div class="menu">
+                                  <div class="item" data-value="1">Bolo</div>
+                                  <div class="item" data-value="2">Bebida</div>
+                                </div>
+                              </div>
                         </div>
                         <div class="ui divider"></div>
                         <div class="field">
@@ -100,14 +105,14 @@
             <div id="escolha-produtos">
             </div>
         </div>
-        <div class="ui error message" class="ui modal" id="erro-criacao-produtos">
+        <div class="ui modal error message" id="erro-criacao-produtos">
             <i class="close icon"></i>
             <div class="header">
                 Há alguns erros na sua criação
             </div>
-            <ul class="list">
-              <li>A categoria deve ser um número, escolha entre (1 - Bolo / 2 - Bebidas).</li>
-            </ul>
+            <div id="errModel">
+
+            </div>
         </div>
        
                 
