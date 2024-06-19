@@ -5,17 +5,13 @@ var newResponse = '';
 
 init();
 
-function init() {
-	//criarProduto();
-	consultarApiProdutos();
-}
-
-//------------------ LISTAR ------------------//
-function orderByCategoria(a, b) {
-	return a - b;
-}
-
-/*function listarProdutos() {
+    function init(){
+        //criarProduto();
+        consultarApiProdutos();
+    }
+  
+    //------------------ LISTAR ------------------//
+    /*function listarProdutos() {
       ->FORMA DE FAZER COM AJAX<-
         console.log('entrei lista');
         $.ajax({
@@ -31,26 +27,31 @@ function orderByCategoria(a, b) {
             });
 
     }*/
+       
+    function consultarApiProdutos(){
+        $.getJSON(END_FUNCIONAL, function (response){
 
-function consultarApiProdutos() {
-	$.getJSON(END_FUNCIONAL, function (response) {
-		//categoria
-		newResponse = response.sort(orderByCategoria);
+            listarProdutos(response);
 
-		//testar caracter especial
-		newResponse.sort(function (a, b) {
-			return a.nome.localeCompare(b.nome);
-		});
+        });
+    }
 
-		listarProdutos(newResponse);
-	});
-}
+    function ordenarExibicao(response){
+        newResponse = response.sort(function(a, b) {
+            if (a.idCategoria === b.idCategoria) {
+                return a.nome.localeCompare(b.nome);
+            }
+            return 0; 
+        });
+    }
 
-function listarProdutos(newResponse) {
-	var conteudoProduto = '';
-
-	newResponse.forEach((element) => {
-		conteudoProduto += `<div class="ui card fluid" id="produto-${element.idProduto}">
+    function listarProdutos(response) {
+        ordenarExibicao(response);
+        console.log(response);
+        var conteudoProduto = '';
+        
+        newResponse.forEach(element => {
+            conteudoProduto += `<div class="ui card fluid" id="produto-${element.idProduto}">
                                     <div class="ui top brown attached label">${element.nome}</div>
                                     <div class="blurring dimmable image">    
                                        <div class="ui green bottom right attached label">${element.idCategoria}</div>
@@ -229,23 +230,32 @@ function pesquisarProduto() {
 }
 //------------------ PESQUISA DE VERDADE POOOO ------------------//
 
-//------------------ CRIAR DE VERDADE POOOO ------------------//
-const inputs = $('#criar-produto').find('input[required]');
-const button = $('#btn-criar-produto');
+    //------------------ CRIAR DE VERDADE POOOO ------------------//
+    const inputs = $('#criar-produto').find('input[required], select[required]');
+    const button = $('#btn-criar-produto');
 
-function checkInputs() {
-	let allFilled = true;
-	inputs.each(function () {
-		if ($(this).val() === '') {
-			allFilled = false;
-			return false;
-		}
-	});
-	button.prop('disabled', !allFilled);
-}
+    function checkInputs() {
+        let allFilled = true;
+        inputs.each(function() {
+            if ($(this).is('select')){
+                console.log('entrei')
+                if ($(this).val() === '' || $(this).find('option:selected').is(':disabled')) {
+                    allFilled = false;
+                    return false;
+                }
+            } else {
+                if ($(this).val() === '') {
+                    allFilled = false;
+                    return false;
+                }
+            }
+           
+        });
+        button.prop('disabled', !allFilled);
+    }
 
-inputs.on('input', checkInputs);
-checkInputs();
+    inputs.on('input change', checkInputs);
+    checkInputs();
 
 $('#criar-produto').on('submit', function (event) {
 	event.preventDefault();
