@@ -1,4 +1,4 @@
-header {
+#header-principal {
     padding-top: 8px;
     background-color: #ffff00;
     height: 56px;
@@ -10,7 +10,7 @@ main {
     padding-top: 102px;
     z-index: 1 !important;
 }
-#btn-confirmar {
+/* #btn-confirmar {
     position: fixed !important;
     right: 16px !important;
     bottom: 16px !important;
@@ -23,7 +23,7 @@ main {
     top: -46px !important;
     right: 16px !important;
     height: 24px !important;
-}
+} */
 #menu button.menu-item {
     height: 56px;
     width: 100;
@@ -44,7 +44,11 @@ main {
 .sidebar{
     background-color: #6b6b00 !important;
 }
-h1 {
+h1{
     color:  #6b6b00 ;
     font-family: 'Roboto', sans-serif;
+}
+#btn-procurar-generico{
+    color: rgb(255, 255, 255);
+    background-color: #6b6b00 !important;
 }

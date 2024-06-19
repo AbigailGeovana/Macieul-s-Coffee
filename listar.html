@@ -11,15 +11,38 @@
             $("#includecontent").load("layout/index.html");
         })
     </script>
+    <div id="content">
+        <div class="ui grid container">
+            <div class="twelve wide column">
+                <a href="/adicionar.html">
+                    <button class="ui green button">Novo Produto
+                        <i class="plus icon"></i>
+                    </button>
+                </a>
+            </div>
+            <div class="four wide column right">
+                <div class="ui input">
+                    <input id="pesquisa-generica" type="text" placeholder="Search...">
+                    <button class="ui button" id="btn-procurar-generica">Pesquisar</button>
+                    <button class="ui red button" id="btn-limpar-generica">X</button>
+                </div>
+                <div id="aviso-pesquisa-vazia" class="sixteen wide column right"></div>
+                <div class="ui popup">
+                    <i class="bullhorn icon"></i>
+                    <div class="header">
+                        Nenhum Produto Foi Digitado!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <main>
         <div class="ui container">
-            <div class="ui tab" data-tab="tab-produtos">
                 <div class="ui four doubling stackable cards special" id="menu-produtos">
                 </div>
             </div>
         </div>
     </main>
-
     <div class="ui modal">
         <i class="close icon"></i>
         <div class="header">
@@ -29,6 +52,8 @@
         </div>
     </div>
 
+   
+
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
@@ -36,7 +61,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript" src="/js/cozinha/index.js"></script>
-    <script type="text/javascript" src="/js/usuario/index.js"></script>
+    <script type="text/javascript" src="/js/editar.js"></script>
 
 </body>
 

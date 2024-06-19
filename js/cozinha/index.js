@@ -1,48 +1,16 @@
 const TOKEN = '73f0b83ef01dce03717091bd11a7a64efc607b32';
 const END_FUNCIONAL = `https://cipaon.com.br/api/produto.php?token=${TOKEN}`;
-var conteudoProduto = '';
+const URL = `https://cipaon.com.br/api/produto.php?`;
 var newResponse = '';
 
-
-init();
+    init();
 
     function init(){
         //criarProduto();
-        listarProdutos();
-        componentInit();
+        consultarApiProdutos();
     }
-
-    function componentInit() {
-        $.tab();
-        $.tab('change tab', 'tab-produtos');
-        $('#menu .menu-item').click(function () {
-            let abaAtiva = $(this).attr('data-tab-name');
-            $.tab('change tab', abaAtiva);
-        });
-        $('.special.cards .image').dimmer({ on: 'click' });
-    }
-
-    function criarProduto() {
-        $.ajax({
-            url: "https://cipaon.com.br/api/produto.php",
-            method: "POST",
-            data: {
-                token: "73f0b83ef01dce03717091bd11a7a64efc607b32",
-                nome: "Amora",
-                idCategoria: 3,
-                foto: "https://dairyfarmersofcanada.ca/sites/default/files/styles/recipe_image/public/image_file_browser/conso_recipe/2022/Capuccino.jpg.jpeg",
-                preco: 71.00,
-                descricao: "fresco e bom"
-            },
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        })
-    }
-
+  
+    //------------------ LISTAR ------------------//
     function orderByCategoria(a, b) {
         return a - b;
     }
@@ -63,8 +31,8 @@ init();
             });
 
     }*/
-              
-    function listarProdutos() {
+       
+    function consultarApiProdutos(){
         $.getJSON(END_FUNCIONAL, function (response){
 
             //categoria
@@ -73,33 +41,43 @@ init();
             //testar caracter especial
             newResponse.sort(function(a, b) {
                 return a.nome.localeCompare(b.nome);
-            }); 
-
-            newResponse.forEach(element => {
-                conteudoProduto += `<div class="ui card fluid" id="produto-${element.idProduto}">
-                                                <div class="ui top brown attached label">${element.nome}</div>
-                                                <div class="blurring dimmable image">
-                                                
-                                                    <div class="ui green bottom right attached label">${element.idCategoria}</div>
-                                                    <img src="${element.foto}">
-                                                </div>
-                                                <div class="extra content">
-                                                    <div class="ui three buttons">
-                                                        <div id="edite" class="ui icon button basic editar" data-item="edit">
-                                                            <i class="edit icon"></i>
-                                                        </div>
-                                                        <div id="delete" class="ui icon button basic deletar" data-item="del">
-                                                            <i class="delete icon"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                    </div>`;
             });
-            $('#menu-produtos').append(conteudoProduto);
-        });
 
+            listarProdutos(newResponse);
+
+        });
     }
 
+    function listarProdutos(newResponse) {
+        var conteudoProduto = '';
+        
+        newResponse.forEach(element => {
+            conteudoProduto += `<div class="ui card fluid" id="produto-${element.idProduto}">
+                                    <div class="ui top brown attached label">${element.nome}</div>
+                                    <div class="blurring dimmable image">    
+                                       <div class="ui green bottom right attached label">${element.idCategoria}</div>
+                                            <img src="${element.foto}">
+                                    </div>
+                                    <div class="extra content">
+                                        <div class="ui three buttons">
+                                            <a href="/editar.html">
+                                                <div id="edite" class="ui icon button basic editar" data-item="edit">
+                                                    <i class="edit icon"></i>
+                                                </div>
+                                            </a>
+                                            <div id="delete" class="ui icon button basic deletar" data-item="del">
+                                                <i class="delete icon"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+        });
+        $('#menu-produtos').append(conteudoProduto);
+
+    }
+    //------------------ LISTAR ------------------//
+
+    //------------------ EXCLUIR ------------------//
     $('#menu-produtos').on('click','#delete', function(){
         let item = $(this).closest('.ui.card').attr('id').split('-')[1];
 
@@ -182,28 +160,150 @@ init();
             }
         })
     }
+    //------------------ EXCLUIR ------------------//
+
+    //------------------ PESQUISA ------------------//
+    $(document).on('click', '#btn-procurar-generica', function() {
+        $('#menu-produtos').empty();
+        pesquisarProdutoGenerico();
        
+    });
+
+    $(document).on('click', '#btn-limpar-generica', function() {
+        $('#menu-produtos').empty();
+        $('#pesquisa-generica').val('');
+        consultarApiProdutos();
+    });
+
+    function pesquisarProdutoGenerico(){
+        let nomeProcurar = $('#pesquisa-generica').val();
+        if (nomeProcurar == '') {
+            alertaPesquisaGenericaVazia();
+            return;
+        } else {
+            const resultadoProcurar = newResponse.filter(json => nomeProcurar == json.nome);
+            listarProdutos(resultadoProcurar);
+        }
+    }
+
+    function alertaPesquisaGenericaVazia(){
+        $('#aviso-pesquisa-vazia').popup('show');
+    }
+    //------------------ PESQUISA ------------------//
+        
+    //------------------ CHAMAR EDIT ------------------//
     $('#menu-produtos').on('click','#edite', function(){
         console.log('entrei no edit');
         let item = $(this).closest('.ui.card').attr('id').split('-')[1];
-       console.log(item);
+        console.log(item);
+
+        produtoEditar = `<div class="ui card fluid" id="produto-${item.idProduto}">
+                                <div class="ui top brown attached label">${item.nome}</div>
+                                <div class="blurring dimmable image">    
+                                   <div class="ui green bottom right attached label">${item.idCategoria}</div>
+                                        <img src="${item.foto}">
+                                </div>
+                            </div>`;
+        $('#editar-produto').append(produtoEditar);
+
+
+    });
+    //------------------ CHAMAR EDIT ------------------//
+    
+   //------------------ PESQUISA DE VERDADE POOOO ------------------//
+    $('#pesquisa-dinamica').on('input', function(){
+        pesquisarProduto();
     });
 
-    function pesquisar(){
-        $('#btn-find').click(function () {
+    function pesquisarProduto(){
+        $('#menu-produtos').empty();
 
-            let nomeProcurar = $('#findNome').val();
-            if (nomeProcurar == '') {
-                alert("Nenhum nome digitado!");
-                return;
-            } else {
-                const resultadoProcurar = array.filter(json => nomeProcurar == json.nome);
-                atualizarContato(resultadoProcurar);
-            }
-        });
+        let pesquisa = $('#pesquisa-dinamica').val();
+        pesquisa.toLowerCase();
+       
+        const resultado = newResponse.filter(json => json.nome.toLowerCase().startsWith(pesquisa));
+
+        $('#pesquisa-generica').val('');
+        listarProdutos(resultado);
     }
-   
-   
-    
+    //------------------ PESQUISA DE VERDADE POOOO ------------------//
 
+    //------------------ CRIAR DE VERDADE POOOO ------------------//
+    $('#criar-produto').on('submit', function(event){
+        event.preventDefault();
+        coletarDadosCreate($(this));
+    });
+
+    function coletarDadosCreate(form){
+        const dados = form.serializeArray();
+        let dadosObj = {};
+
+        dados.forEach(item => {
+                dadosObj[item.name] = item.value;
+        });
+
+       // if(blabla
+        //    $('#erro-criacao-produtos')
+          //  .modal('show')
+       // ; 
+       // )
+
+        criarProduto(dadosObj);
+    }
+
+    function criarProduto(dadosObj) {
+        $.ajax({
+            url: URL,
+            method: "POST",
+            data: {
+                token: TOKEN,
+                nome: dadosObj.nome,
+                idCategoria: dadosObj.categoria,
+                foto: dadosObj.foto,
+                preco: dadosObj.preco,
+                descricao: dadosObj.descricao
+            },
+            success: function (data) {
+                $('#escolha')
+                    .modal('show')
+                ; 
+
+                modalEscolhaContinuarVisualizar();
+                $('#criar-produto')[0].reset();
+            },
+            error: function (error) {
+            }
+        })
+    }
+
+    function modalEscolhaContinuarVisualizar(){
+        $('#escolha-produtos').empty();
+        conteudo = `
+                <div class=""> 
+                    <a href="/listar.html">
+                        <button class="ui button" id="btn-visualizar">Visualizar Produto</button>
+                    </a>
+                     <a href="/adicionar.html">
+                        <button class="ui button">Continuar Criando</button>
+                    </a>
+                </div>
+        `;
+
+        $('#escolha-produtos').append(conteudo);       
+    }
+    //------------------ CRIAR DE VERDADE POOOO ------------------//
+
+
+ // const formProduto = document.querySelector('#criar-produto')
+        
+        // formProduto.addEventListener('submit', (event) => {
+
+        //     event.preventDefault()
+
+        //     const data = Object.fromEntries(new FormData(event.target).entries());
+        //     console.log(data);
+        // });
+
+      
+    
 
