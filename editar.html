@@ -15,7 +15,7 @@
     <div id="content">
         <div class="ui centered grid container">
             <div class="four wide column">
-                <div id="pesquisa" class="ui icon input">
+                <!-- <div id="pesquisa" class="ui icon input">
                     <input type="text" placeholder="Código do Produto...">
                     <button class="ui button" id="btn-procurar-generica">Editar</button>
                     <button class="ui red button" id="btn-limpar-generica">Limpar</button>
@@ -26,7 +26,120 @@
                     <div class="header">
                         Nenhum Produto Foi Digitado!
                     </div>
-                </div>
+                </div> -->
+                
+                <form class="ui fluid form" id="editar-produto">
+                    <div>
+                        <input name="id" id="idProduto" hidden>
+                    </div>
+                    <div class="field">
+                        <label
+                            >Nome
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="12"
+                                height="12"
+                                fill="#ff3333"
+                                class="bi bi-asterisk"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
+                            </svg>
+                        </label>
+                        <input
+                            type="text"
+                            name="nome"
+                            placeholder="Insira o texto..."
+                            required />
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="field">
+                        <label
+                            >Categoria
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="12"
+                                height="12"
+                                fill="#ff3333"
+                                class="bi bi-asterisk"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
+                            </svg>
+                        </label>
+                        <select name="categoria">
+                            <option value="" disabled selected>
+                                Categoria
+                            </option>
+                            <option value="1">Bolo</option>
+                            <option value="2">Bebida</option>
+                        </select>
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="field">
+                        <label
+                            >Descrição
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="12"
+                                height="12"
+                                fill="#ff3333"
+                                class="bi bi-asterisk"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
+                            </svg>
+                        </label>
+                        <input
+                            type="text"
+                            name="descricao"
+                            placeholder="Insira o texto..."
+                            required />
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="inline field">
+                        <label
+                            >Preço
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="12"
+                                height="12"
+                                fill="#ff3333"
+                                class="bi bi-asterisk"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z" />
+                            </svg>
+                        </label>
+                        <input
+                            type="text"
+                            name="preco"
+                            placeholder="Insira o texto..."
+                            required />
+                        <div class="ui left pointing label">$ Real</div>
+                    </div>
+                    <div class="ui divider"></div>
+                    <div class="field">
+                        <label>Foto </label>
+                        <input
+                            type="text"
+                            name="foto"
+                            placeholder="Foto.." />
+                        <div class="ui pointing label">URL</div>
+                    </div>
+                    <br />
+                    <button
+                        class="ui green button"
+                        id="btn-editar-produto">
+                        Salvar
+                    </button>
+                    <button
+                        class="ui red button"
+                        id="btn-limpar-editar"
+                        type="reset">
+                        Cancelar
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -39,7 +152,15 @@
         </div>
     </main>
     
+<script>
+    let url = new URL(window.location.href);
+    let produtoId = url.searchParams.get("produto");
 
+    if (produtoId !== "") {
+        $('#idProduto').val(produtoId);
+    }
+
+</script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>

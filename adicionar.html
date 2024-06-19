@@ -1,11 +1,12 @@
 <body>
-    <!-- include -->
-    <div id="includecontent">
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- include end -->
+	<!-- include -->
+	<div id="includecontent"></div>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+		integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+		crossorigin="anonymous"
+		referrerpolicy="no-referrer"></script>
+	<!-- include end -->
 
     <script>
         $(function () {
@@ -50,7 +51,7 @@
                                     <path d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z"/>
                                 </svg>
                             </label>
-                                <select name="categoria" required>
+                                <select name="categoria">
                                     <option value="" disabled selected>Categoria</option>
                                     <option value="1">Bolo</option>
                                     <option value="2">Bebida</option>
@@ -93,32 +94,24 @@
             </div>
         </div>
 
-        <div class="ui modal" id="escolha">
-            <i class="close icon"></i>
-                <div class="header">
-                    Produto Criado com Sucesso!! 
-                </div>
-            <div id="escolha-produtos">
-            </div>
-        </div>
-        <div class="ui modal error message" id="erro-criacao-produtos">
-            <i class="close icon"></i>
-            <div class="header">
-                Há alguns erros na sua criação
-            </div>
-            <div id="errModel">
+		<div class="ui modal" id="escolha">
+			<i class="close icon"></i>
+			<div class="header">Produto Criado com Sucesso!!</div>
+			<div id="escolha-produtos"></div>
+		</div>
+		<div class="ui modal error message" id="erro-criacao-produtos">
+			<i class="close icon"></i>
+			<div class="header">Há alguns erros na sua criação</div>
+			<div id="errModel"></div>
+		</div>
+	</main>
 
-            </div>
-        </div>
-       
-                
-    </main>
+	<script
+		src="https://code.jquery.com/jquery-3.6.1.min.js"
+		integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
-        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script type="text/javascript" src="/js/cozinha/index.js"></script>
+	<script type="text/javascript" src="/js/cozinha/index.js"></script>
 </body>

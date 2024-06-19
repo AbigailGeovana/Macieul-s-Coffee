@@ -3,7 +3,7 @@ const END_FUNCIONAL = `https://cipaon.com.br/api/produto.php?token=${TOKEN}`;
 const URL = `https://cipaon.com.br/api/produto.php?`;
 var newResponse = '';
 
-    init();
+init();
 
     function init(){
         //criarProduto();
@@ -59,7 +59,8 @@ var newResponse = '';
                                     </div>
                                     <div class="extra content">
                                         <div class="ui three buttons">
-                                            <a href="/editar.html">
+                                            <a href="/editar.html?produto=${element.idProduto}" class="ui button">Editar</a>
+
                                                 <div id="edite" class="ui icon button basic editar" data-item="edit">
                                                     <i class="edit icon"></i>
                                                 </div>
@@ -70,28 +71,25 @@ var newResponse = '';
                                         </div>
                                     </div>
                                 </div>`;
-        });
-        $('#menu-produtos').append(conteudoProduto);
+	});
+	$('#menu-produtos').append(conteudoProduto);
+}
+//------------------ LISTAR ------------------//
 
-    }
-    //------------------ LISTAR ------------------//
+//------------------ EXCLUIR ------------------//
+$('#menu-produtos').on('click', '#delete', function () {
+	let item = $(this).closest('.ui.card').attr('id').split('-')[1];
 
-    //------------------ EXCLUIR ------------------//
-    $('#menu-produtos').on('click','#delete', function(){
-        let item = $(this).closest('.ui.card').attr('id').split('-')[1];
+	confirmarExclusao(item);
 
-        confirmarExclusao(item);
+	$('.ui.modal').modal('show');
+});
 
-        $('.ui.modal')
-            .modal('show')
-        ;
-    });
+function confirmarExclusao(item) {
+	$('#confirma-excluir-produtos').empty();
 
-    function confirmarExclusao(item){
-        $('#confirma-excluir-produtos').empty();
-
-        produto = newResponse.find(prod => prod.idProduto == item);
-        conteudo = `
+	produto = newResponse.find((prod) => prod.idProduto == item);
+	conteudo = `
         <div class="ui grid">
             <div class="four wide column">
                 <div class="ui medium image">
@@ -114,20 +112,24 @@ var newResponse = '';
             </div>
         </div>`;
 
-        $('#confirma-excluir-produtos').append(conteudo);
+	$('#confirma-excluir-produtos').append(conteudo);
 
-         //$('#confirma-excluir-produtos').off('click', '#deletar-produto').on('click', '#deletar-produto', function(){
-        $('#deletar-produto').off('click').on('click', function() {
-            excluirProduto(item);
-            $('.ui.modal').modal('hide');
-        });
+	//$('#confirma-excluir-produtos').off('click', '#deletar-produto').on('click', '#deletar-produto', function(){
+	$('#deletar-produto')
+		.off('click')
+		.on('click', function () {
+			excluirProduto(item);
+			$('.ui.modal').modal('hide');
+		});
 
-        $('.ui.black.deny.button').off('click').on('click', function() {
-            $('.ui.modal').modal('hide');
-        });
-    }
+	$('.ui.black.deny.button')
+		.off('click')
+		.on('click', function () {
+			$('.ui.modal').modal('hide');
+		});
+}
 
-    /*function excluirProduto(item){
+/*function excluirProduto(item){
         ->FORMA DE FAZER COM FETCH<-
        fetch(`https://cipaon.com.br/api/produto.php?token=${TOKEN}&idProduto=${item}`, {
             method: "DELETE",  
@@ -145,68 +147,88 @@ var newResponse = '';
         });
     }*/
 
-    function excluirProduto(item){
-        const DELETE = `https://cipaon.com.br/api/produto.php?token=${TOKEN}&idProduto=${item}`;
-        $.ajax({
-            url: DELETE,
-            type: 'DELETE',
-            success: function (response) {
-                console.log('produto deletado', item);
-                $(`#produto-${item}`).remove();
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        })
-    }
-    //------------------ EXCLUIR ------------------//
+function excluirProduto(item) {
+	const DELETE = `https://cipaon.com.br/api/produto.php?token=${TOKEN}&idProduto=${item}`;
+	$.ajax({
+		url: DELETE,
+		type: 'DELETE',
+		success: function (response) {
+			console.log('produto deletado', item);
+			$(`#produto-${item}`).remove();
+		},
+		error: function (error) {
+			console.log(error);
+		},
+	});
+}
+//------------------ EXCLUIR ------------------//
 
-    //------------------ PESQUISA ------------------//
-    $(document).on('click', '#btn-procurar-generica', function() {
-        $('#menu-produtos').empty();
-        pesquisarProdutoGenerico();
-       
-    });
+//------------------ PESQUISA ------------------//
+$(document).on('click', '#btn-procurar-generica', function () {
+	$('#menu-produtos').empty();
+	pesquisarProdutoGenerico();
+});
 
-    $(document).on('click', '#btn-limpar-generica', function() {
-        $('#menu-produtos').empty();
-        $('#pesquisa-generica').val('');
-        consultarApiProdutos();
-    });
+$(document).on('click', '#btn-limpar-generica', function () {
+	$('#menu-produtos').empty();
+	$('#pesquisa-generica').val('');
+	consultarApiProdutos();
+});
 
-    function pesquisarProdutoGenerico(){
-        let nomeProcurar = $('#pesquisa-generica').val();
-        if (nomeProcurar == '') {
-            alertaPesquisaGenericaVazia();
-            return;
-        } else {
-            const resultadoProcurar = newResponse.filter(json => nomeProcurar == json.nome);
-            listarProdutos(resultadoProcurar);
-        }
-    }
+function pesquisarProdutoGenerico() {
+	let nomeProcurar = $('#pesquisa-generica').val();
+	if (nomeProcurar == '') {
+		alertaPesquisaGenericaVazia();
+		return;
+	} else {
+		const resultadoProcurar = newResponse.filter(
+			(json) => nomeProcurar == json.nome
+		);
+		listarProdutos(resultadoProcurar);
+	}
+}
 
-    function alertaPesquisaGenericaVazia(){
-        $('#aviso-pesquisa-vazia').popup('show');
-    }
-    //------------------ PESQUISA ------------------//
-    
-   //------------------ PESQUISA DE VERDADE POOOO ------------------//
-    $('#pesquisa-dinamica').on('input', function(){
-        pesquisarProduto();
-    });
+function alertaPesquisaGenericaVazia() {
+	$('#aviso-pesquisa-vazia').popup('show');
+}
+//------------------ PESQUISA ------------------//
 
-    function pesquisarProduto(){
-        $('#menu-produtos').empty();
+//------------------ CHAMAR EDIT ------------------//
+$('#menu-produtos').on('click', '#edite', function () {
+	console.log('entrei no edit');
+	let item = $(this).closest('.ui.card').attr('id').split('-')[1];
+	console.log(item);
 
-        let pesquisa = $('#pesquisa-dinamica').val();
-        pesquisa.toLowerCase();
-       
-        const resultado = newResponse.filter(json => json.nome.toLowerCase().startsWith(pesquisa));
+	produtoEditar = `<div class="ui card fluid" id="produto-${item.idProduto}">
+                                <div class="ui top brown attached label">${item.nome}</div>
+                                <div class="blurring dimmable image">    
+                                   <div class="ui green bottom right attached label">${item.idCategoria}</div>
+                                        <img src="${item.foto}">
+                                </div>
+                            </div>`;
+	$('#editar-produto').append(produtoEditar);
+});
+//------------------ CHAMAR EDIT ------------------//
 
-        $('#pesquisa-generica').val('');
-        listarProdutos(resultado);
-    }
-    //------------------ PESQUISA DE VERDADE POOOO ------------------//
+//------------------ PESQUISA DE VERDADE POOOO ------------------//
+$('#pesquisa-dinamica').on('input', function () {
+	pesquisarProduto();
+});
+
+function pesquisarProduto() {
+	$('#menu-produtos').empty();
+
+	let pesquisa = $('#pesquisa-dinamica').val();
+	pesquisa.toLowerCase();
+
+	const resultado = newResponse.filter((json) =>
+		json.nome.toLowerCase().startsWith(pesquisa)
+	);
+
+	$('#pesquisa-generica').val('');
+	listarProdutos(resultado);
+}
+//------------------ PESQUISA DE VERDADE POOOO ------------------//
 
     //------------------ CRIAR DE VERDADE POOOO ------------------//
     const inputs = $('#criar-produto').find('input[required], select[required]');
@@ -235,63 +257,61 @@ var newResponse = '';
     inputs.on('input change', checkInputs);
     checkInputs();
 
-    $('#criar-produto').on('submit', function(event){
-        event.preventDefault();
-        coletarDadosCreate($(this));
-    });
+$('#criar-produto').on('submit', function (event) {
+	event.preventDefault();
+	coletarDadosCreate($(this));
+});
 
-    function coletarDadosCreate(form){
-        const dados = form.serializeArray();
-        let dadosObj = {};
-        let fieldsErr = [];
+function coletarDadosCreate(form) {
+	const dados = form.serializeArray();
+	let dadosObj = {};
+	let fieldsErr = [];
 
-        dados.forEach(item => {
-            if (item.value == "" && item.name !== "foto") {
-                fieldsErr.push(item.name);
-            }
-                dadosObj[item.name] = item.value;
-        });
+	dados.forEach((item) => {
+		if (item.value == '' && item.name !== 'foto') {
+			fieldsErr.push(item.name);
+		}
+		dadosObj[item.name] = item.value;
+	});
 
-        if (fieldsErr.length !== 0) {
-                $('#erro-criacao-produtos').modal('show');
-                            
-            conteudo = `O campo ${fieldsErr.toString()} está vazio!`;
-            
-            $('#errModel').append(conteudo);
+	if (fieldsErr.length !== 0) {
+		$('#erro-criacao-produtos').modal('show');
 
-            return;
-        }
+		conteudo = `O campo ${fieldsErr.toString()} está vazio!`;
 
-        criarProduto(dadosObj);
-    }
+		$('#errModel').append(conteudo);
 
-    function criarProduto(dadosObj) {
-        $.ajax({
-            url: URL,
-            method: "POST",
-            data: {
-                token: TOKEN,
-                nome: dadosObj.nome,
-                idCategoria: dadosObj.categoria,
-                foto: dadosObj.foto,
-                preco: dadosObj.preco,
-                descricao: dadosObj.descricao
-            },
-            success: function (data) {
-                $('#escolha')
-                    .modal('show')
-                ; 
-                modalEscolhaContinuarVisualizar();
-                $('#criar-produto')[0].reset();
-            },
-            error: function (error) {
-            }
-        })
-    }
+		return;
+	}
 
-    function modalEscolhaContinuarVisualizar(){
-        $('#escolha-produtos').empty();
-        conteudo = `
+	criarProduto(dadosObj);
+}
+
+function criarProduto(dadosObj) {
+	$.ajax({
+		url: URL,
+		method: 'POST',
+		data: {
+			token: TOKEN,
+			nome: dadosObj.nome,
+			idCategoria: dadosObj.categoria,
+			foto: dadosObj.foto,
+			preco: dadosObj.preco,
+			descricao: dadosObj.descricao,
+		},
+		success: function (data) {
+			$('#escolha').modal('show');
+
+			modalEscolhaContinuarVisualizar();
+			$('#criar-produto')[0].reset();
+		},
+		error: function (error) {},
+	});
+}
+
+function modalEscolhaContinuarVisualizar() {
+	$('#escolha-produtos').empty();
+	conteudo = `
                 <div class=""> 
                     <a href="/listar.html">
                         <button class="ui button" id="btn-visualizar">Visualizar Produto</button>
@@ -302,29 +322,69 @@ var newResponse = '';
                 </div>
         `;
 
-        $('#escolha-produtos').append(conteudo);       
+	$('#escolha-produtos').append(conteudo);
+}
+//------------------ CRIAR DE VERDADE POOOO ------------------//
+
+// const formProduto = document.querySelector('#criar-produto')
+
+// formProduto.addEventListener('submit', (event) => {
+
+//     event.preventDefault()
+
+//     const data = Object.fromEntries(new FormData(event.target).entries());
+//     console.log(data);
+// });
+
+// --
+
+$('#editar-produto').on('submit', function (event) {
+    const dados = form.serializeArray();
+	let dadosObj = {};
+	let fieldsErr = [];
+
+	dados.forEach((item) => {
+		if (item.value == '' && item.name !== 'foto') {
+			fieldsErr.push(item.name);
+		}
+		dadosObj[item.name] = item.value;
+	});
+
+	if (fieldsErr.length !== 0) {
+		$('#erro-criacao-produtos').modal('show');
+
+		conteudo = `O campo ${fieldsErr.toString()} está vazio!`;
+
+		$('#errModel').append(conteudo);
+
+		return;
     }
-    //------------------ CRIAR DE VERDADE POOOO ------------------//
-
-    //------------------ CHAMAR EDIT ------------------//
-    $('#menu-produtos').on('click','#edite', function(){
-        console.log('entrei no edit');
-        let item = $(this).closest('.ui.card').attr('id').split('-')[1];
-        console.log(item);
-
-        produtoEditar = `<div class="ui card fluid" id="produto-${item.idProduto}">
-                                <div class="ui top brown attached label">${item.nome}</div>
-                                <div class="blurring dimmable image">    
-                                   <div class="ui green bottom right attached label">${item.idCategoria}</div>
-                                        <img src="${item.foto}">
-                                </div>
-                            </div>`;
-        $('#editar-produto').append(produtoEditar);
-
-
-    });
-    //------------------ CHAMAR EDIT ------------------//
-
-      
     
+    console.log(dadosObj);
+	
+    handleEdit(dadosObj)
+});
 
+function handleEdit(dadosObj) {
+    $.ajax({
+		url: END_FUNCIONAL,
+		method: 'PUT',
+		data: {
+            idProduto: dadosObj.id,
+            produto: {
+                nome: dadosObj.nome,
+                idCategoria: dadosObj.categoria,
+                foto: dadosObj.foto,
+                preco: dadosObj.preco,
+                descricao: dadosObj.descricao
+            }
+		},
+		success: function (data) {
+			$('#escolha').modal('show');
+
+			modalEscolhaContinuarVisualizar();
+			$('#criar-produto')[0].reset();
+		},
+		error: function (error) {},
+	});
+}
