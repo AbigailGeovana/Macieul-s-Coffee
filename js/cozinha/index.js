@@ -6,11 +6,10 @@ var newResponse = '';
 init();
 
     function init(){
-        //criarProduto();
         consultarApiProdutos();
     }
   
-    //------------------ LISTAR ------------------//
+    //------------------ LISTAR-FUNCIONALIDADE: LISTAR ------------------//
     /*function listarProdutos() {
       ->FORMA DE FAZER COM AJAX<-
         console.log('entrei lista');
@@ -30,14 +29,19 @@ init();
        
     function consultarApiProdutos(){
         $.getJSON(END_FUNCIONAL, function (response){
-
-            listarProdutos(response);
+            newResponse = response;
+            listarProdutos(newResponse);
 
         });
     }
 
-    function ordenarExibicao(response){
-        newResponse = response.sort(function(a, b) {
+    function ordenarExibicao(newResponse){
+
+        newResponse.sort(function(a, b) {
+            return a.idCategoria - b.idCategoria;
+        });
+
+        newResponse.sort(function(a, b) {
             if (a.idCategoria === b.idCategoria) {
                 return a.nome.localeCompare(b.nome);
             }
@@ -45,9 +49,9 @@ init();
         });
     }
 
-    function listarProdutos(response) {
-        ordenarExibicao(response);
-        console.log(response);
+    function listarProdutos(newResponse) {
+        ordenarExibicao(newResponse);
+        
         var conteudoProduto = '';
         
         newResponse.forEach(element => {
@@ -59,11 +63,8 @@ init();
                                     </div>
                                     <div class="extra content">
                                         <div class="ui three buttons">
-                                            <a href="/editar.html?produto=${element.idProduto}" class="ui button">Editar</a>
-
-                                                <div id="edite" class="ui icon button basic editar" data-item="edit">
-                                                    <i class="edit icon"></i>
-                                                </div>
+                                            <a href="/editar.html?produto=${element.idProduto}" class="ui button">
+                                                <i class="edit icon"></i>
                                             </a>
                                             <div id="delete" class="ui icon button basic deletar" data-item="del">
                                                 <i class="delete icon"></i>
@@ -74,9 +75,9 @@ init();
 	});
 	$('#menu-produtos').append(conteudoProduto);
 }
-//------------------ LISTAR ------------------//
+//------------------ LISTAR-FUNCIONALIDADE: LISTAR ------------------//
 
-//------------------ EXCLUIR ------------------//
+//------------------ LISTAR-FUNCIONALIDADE: EXCLUIR ------------------//
 $('#menu-produtos').on('click', '#delete', function () {
 	let item = $(this).closest('.ui.card').attr('id').split('-')[1];
 
@@ -161,9 +162,9 @@ function excluirProduto(item) {
 		},
 	});
 }
-//------------------ EXCLUIR ------------------//
+//------------------ LISTAR-FUNCIONALIDADE: EXCLUIR ------------------//
 
-//------------------ PESQUISA ------------------//
+//------------------ LISTAR-FUNCIONALIDADE: PESQUISA ------------------//
 $(document).on('click', '#btn-procurar-generica', function () {
 	$('#menu-produtos').empty();
 	pesquisarProdutoGenerico();
@@ -191,26 +192,9 @@ function pesquisarProdutoGenerico() {
 function alertaPesquisaGenericaVazia() {
 	$('#aviso-pesquisa-vazia').popup('show');
 }
-//------------------ PESQUISA ------------------//
+//------------------ LISTAR-FUNCIONALIDADE: PESQUISA ------------------//
 
-//------------------ CHAMAR EDIT ------------------//
-$('#menu-produtos').on('click', '#edite', function () {
-	console.log('entrei no edit');
-	let item = $(this).closest('.ui.card').attr('id').split('-')[1];
-	console.log(item);
-
-	produtoEditar = `<div class="ui card fluid" id="produto-${item.idProduto}">
-                                <div class="ui top brown attached label">${item.nome}</div>
-                                <div class="blurring dimmable image">    
-                                   <div class="ui green bottom right attached label">${item.idCategoria}</div>
-                                        <img src="${item.foto}">
-                                </div>
-                            </div>`;
-	$('#editar-produto').append(produtoEditar);
-});
-//------------------ CHAMAR EDIT ------------------//
-
-//------------------ PESQUISA DE VERDADE POOOO ------------------//
+//------------------ PESQUISAR-FUNCIONALIDADE: PESQUISA ------------------//
 $('#pesquisa-dinamica').on('input', function () {
 	pesquisarProduto();
 });
@@ -228,9 +212,9 @@ function pesquisarProduto() {
 	$('#pesquisa-generica').val('');
 	listarProdutos(resultado);
 }
-//------------------ PESQUISA DE VERDADE POOOO ------------------//
+//------------------ PESQUISAR-FUNCIONALIDADE: PESQUISA ------------------//
 
-    //------------------ CRIAR DE VERDADE POOOO ------------------//
+    //------------------ CRIAR-FUNCIONALIDADE: CRIAR ------------------//
     const inputs = $('#criar-produto').find('input[required], select[required]');
     const button = $('#btn-criar-produto');
 
@@ -287,27 +271,30 @@ function coletarDadosCreate(form) {
 	criarProduto(dadosObj);
 }
 
-function criarProduto(dadosObj) {
-	$.ajax({
-		url: URL,
-		method: 'POST',
-		data: {
-			token: TOKEN,
-			nome: dadosObj.nome,
-			idCategoria: dadosObj.categoria,
-			foto: dadosObj.foto,
-			preco: dadosObj.preco,
-			descricao: dadosObj.descricao,
-		},
-		success: function (data) {
-			$('#escolha').modal('show');
+    function criarProduto(dadosObj) {
+        $.ajax({
+            url: URL,
+            method: "POST",
+            data: {
+                token: TOKEN,
+                nome: dadosObj.nome,
+                idCategoria: dadosObj.categoria,
+                foto: dadosObj.foto,
+                preco: dadosObj.preco,
+                descricao: dadosObj.descricao
+            },
+            success: function (data) {
+                $('#escolha')
+                    .modal('show')
+                ; 
 
-			modalEscolhaContinuarVisualizar();
-			$('#criar-produto')[0].reset();
-		},
-		error: function (error) {},
-	});
-}
+                modalEscolhaContinuarVisualizar();
+                $('#criar-produto')[0].reset();
+            },
+            error: function (error) {
+            }
+        })
+    }
 
 function modalEscolhaContinuarVisualizar() {
 	$('#escolha-produtos').empty();
@@ -324,19 +311,7 @@ function modalEscolhaContinuarVisualizar() {
 
 	$('#escolha-produtos').append(conteudo);
 }
-//------------------ CRIAR DE VERDADE POOOO ------------------//
-
-// const formProduto = document.querySelector('#criar-produto')
-
-// formProduto.addEventListener('submit', (event) => {
-
-//     event.preventDefault()
-
-//     const data = Object.fromEntries(new FormData(event.target).entries());
-//     console.log(data);
-// });
-
-// --
+//------------------ CRIAR-FUNCIONALIDADE: CRIAR ------------------//
 
 $('#editar-produto').on('submit', function (event) {
     const dados = form.serializeArray();
