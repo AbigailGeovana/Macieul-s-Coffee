@@ -243,10 +243,10 @@ var newResponse = '';
         });
 
        // if(blabla
-        //    $('#erro-criacao-produtos')
-          //  .modal('show')
-       // ; 
-       // )
+          $('#erro-criacao-produtos')
+          .modal('show')
+        ; 
+       //)
 
         criarProduto(dadosObj);
     }
