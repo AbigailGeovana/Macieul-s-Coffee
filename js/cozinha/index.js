@@ -190,25 +190,6 @@ var newResponse = '';
         $('#aviso-pesquisa-vazia').popup('show');
     }
     //------------------ PESQUISA ------------------//
-        
-    //------------------ CHAMAR EDIT ------------------//
-    $('#menu-produtos').on('click','#edite', function(){
-        console.log('entrei no edit');
-        let item = $(this).closest('.ui.card').attr('id').split('-')[1];
-        console.log(item);
-
-        produtoEditar = `<div class="ui card fluid" id="produto-${item.idProduto}">
-                                <div class="ui top brown attached label">${item.nome}</div>
-                                <div class="blurring dimmable image">    
-                                   <div class="ui green bottom right attached label">${item.idCategoria}</div>
-                                        <img src="${item.foto}">
-                                </div>
-                            </div>`;
-        $('#editar-produto').append(produtoEditar);
-
-
-    });
-    //------------------ CHAMAR EDIT ------------------//
     
    //------------------ PESQUISA DE VERDADE POOOO ------------------//
     $('#pesquisa-dinamica').on('input', function(){
@@ -273,7 +254,6 @@ var newResponse = '';
             return;
         }
 
-        console.log(dadosObj);
         criarProduto(dadosObj);
     }
 
@@ -319,16 +299,24 @@ var newResponse = '';
     }
     //------------------ CRIAR DE VERDADE POOOO ------------------//
 
+    //------------------ CHAMAR EDIT ------------------//
+    $('#menu-produtos').on('click','#edite', function(){
+        console.log('entrei no edit');
+        let item = $(this).closest('.ui.card').attr('id').split('-')[1];
+        console.log(item);
 
- // const formProduto = document.querySelector('#criar-produto')
-        
-        // formProduto.addEventListener('submit', (event) => {
+        produtoEditar = `<div class="ui card fluid" id="produto-${item.idProduto}">
+                                <div class="ui top brown attached label">${item.nome}</div>
+                                <div class="blurring dimmable image">    
+                                   <div class="ui green bottom right attached label">${item.idCategoria}</div>
+                                        <img src="${item.foto}">
+                                </div>
+                            </div>`;
+        $('#editar-produto').append(produtoEditar);
 
-        //     event.preventDefault()
 
-        //     const data = Object.fromEntries(new FormData(event.target).entries());
-        //     console.log(data);
-        // });
+    });
+    //------------------ CHAMAR EDIT ------------------//
 
       
     
