@@ -344,7 +344,7 @@ function handleEdit(dadosObj) {
     $.ajax({
 		url: END_FUNCIONAL,
 		method: 'PUT',
-		data: {
+		data: JSON.stringify({
             idProduto: dadosObj.id,
             produto: {
                 nome: dadosObj.nome,
@@ -353,13 +353,15 @@ function handleEdit(dadosObj) {
                 preco: dadosObj.preco,
                 descricao: dadosObj.descricao
             }
-		},
+		}),
 		success: function (data) {
 			$('#escolha').modal('show');
 
 			modalEscolhaContinuarVisualizar();
 			$('#criar-produto')[0].reset();
 		},
-		error: function (error) {},
+        error: function (error) {
+            console.log(error)
+        },
 	});
 }
