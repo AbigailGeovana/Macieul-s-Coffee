@@ -58,7 +58,8 @@ function listarProdutos(newResponse) {
                                     </div>
                                     <div class="extra content">
                                         <div class="ui three buttons">
-                                            <a href="/editar.html">
+                                            <a href="/editar.html?produto=${element.idProduto}" class="ui button">Editar</a>
+
                                                 <div id="edite" class="ui icon button basic editar" data-item="edit">
                                                     <i class="edit icon"></i>
                                                 </div>
@@ -324,3 +325,56 @@ function modalEscolhaContinuarVisualizar() {
 //     const data = Object.fromEntries(new FormData(event.target).entries());
 //     console.log(data);
 // });
+
+// --
+
+$('#editar-produto').on('submit', function (event) {
+    const dados = form.serializeArray();
+	let dadosObj = {};
+	let fieldsErr = [];
+
+	dados.forEach((item) => {
+		if (item.value == '' && item.name !== 'foto') {
+			fieldsErr.push(item.name);
+		}
+		dadosObj[item.name] = item.value;
+	});
+
+	if (fieldsErr.length !== 0) {
+		$('#erro-criacao-produtos').modal('show');
+
+		conteudo = `O campo ${fieldsErr.toString()} está vazio!`;
+
+		$('#errModel').append(conteudo);
+
+		return;
+    }
+    
+    console.log(dadosObj);
+	
+    handleEdit(dadosObj)
+});
+
+function handleEdit(dadosObj) {
+    $.ajax({
+		url: END_FUNCIONAL,
+		method: 'PUT',
+		data: {
+            idProduto: dadosObj.id,
+            produto: {
+                nome: dadosObj.nome,
+                idCategoria: dadosObj.categoria,
+                foto: dadosObj.foto,
+                preco: dadosObj.preco,
+                descricao: dadosObj.descricao
+            }
+		},
+		success: function (data) {
+			$('#escolha').modal('show');
+
+			modalEscolhaContinuarVisualizar();
+			$('#criar-produto')[0].reset();
+		},
+		error: function (error) {},
+	});
+}
