@@ -11,10 +11,6 @@ var newResponse = '';
     }
   
     //------------------ LISTAR ------------------//
-    function orderByCategoria(a, b) {
-        return a - b;
-    }
-
     /*function listarProdutos() {
       ->FORMA DE FAZER COM AJAX<-
         console.log('entrei lista');
@@ -35,20 +31,23 @@ var newResponse = '';
     function consultarApiProdutos(){
         $.getJSON(END_FUNCIONAL, function (response){
 
-            //categoria
-            newResponse = response.sort(orderByCategoria);
-
-            //testar caracter especial
-            newResponse.sort(function(a, b) {
-                return a.nome.localeCompare(b.nome);
-            });
-
-            listarProdutos(newResponse);
+            listarProdutos(response);
 
         });
     }
 
-    function listarProdutos(newResponse) {
+    function ordenarExibicao(response){
+        newResponse = response.sort(function(a, b) {
+            if (a.idCategoria === b.idCategoria) {
+                return a.nome.localeCompare(b.nome);
+            }
+            return 0; 
+        });
+    }
+
+    function listarProdutos(response) {
+        ordenarExibicao(response);
+        console.log(response);
         var conteudoProduto = '';
         
         newResponse.forEach(element => {
@@ -210,21 +209,30 @@ var newResponse = '';
     //------------------ PESQUISA DE VERDADE POOOO ------------------//
 
     //------------------ CRIAR DE VERDADE POOOO ------------------//
-    const inputs = $('#criar-produto').find('input[required]');
+    const inputs = $('#criar-produto').find('input[required], select[required]');
     const button = $('#btn-criar-produto');
 
     function checkInputs() {
         let allFilled = true;
         inputs.each(function() {
-            if ($(this).val() === '') {
-                allFilled = false;
-                return false;
+            if ($(this).is('select')){
+                console.log('entrei')
+                if ($(this).val() === '' || $(this).find('option:selected').is(':disabled')) {
+                    allFilled = false;
+                    return false;
+                }
+            } else {
+                if ($(this).val() === '') {
+                    allFilled = false;
+                    return false;
+                }
             }
+           
         });
         button.prop('disabled', !allFilled);
     }
 
-    inputs.on('input', checkInputs);
+    inputs.on('input change', checkInputs);
     checkInputs();
 
     $('#criar-produto').on('submit', function(event){
@@ -273,7 +281,6 @@ var newResponse = '';
                 $('#escolha')
                     .modal('show')
                 ; 
-
                 modalEscolhaContinuarVisualizar();
                 $('#criar-produto')[0].reset();
             },
