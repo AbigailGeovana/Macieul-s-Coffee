@@ -8,6 +8,7 @@ var newResponse = '';
     function init(){
         //criarProduto();
         consultarApiProdutos();
+        $('#categoria').dropdown();
     }
   
     //------------------ LISTAR ------------------//
@@ -257,7 +258,7 @@ var newResponse = '';
         let fieldsErr = [];
 
         dados.forEach(item => {
-            if (item.value == "" && item.name !== "foto") {
+            if (item.value == "" && item.name !== "foto" && item.name !== "categoria") {
                 fieldsErr.push(item.name);
             }
                 dadosObj[item.name] = item.value;
@@ -273,6 +274,7 @@ var newResponse = '';
             return;
         }
 
+        console.log(dadosObj);
         criarProduto(dadosObj);
     }
 
